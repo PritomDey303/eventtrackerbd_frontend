@@ -1,4 +1,6 @@
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Badge } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,13 +15,16 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.png";
+
 const drawerWidth = 240;
 // const navItems = ["Home", "Create Post", "Contact"];
 const navItems = [
   [1, "Home", "/"],
   [2, "Create Event", "/create-event"],
   [3, "Your Events", "/your-events"],
+  [4, "Sign Up", "/signup"],
+  [5, "Login", "/signin"],
 ];
 //activeStyle for navLink with animation
 
@@ -92,7 +97,26 @@ function DrawerAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem disablePadding>
+          <ListItemButton key="notification" sx={{ textAlign: "center" }}>
+            <NavLink
+              to="/notification"
+              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
+            >
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
       </List>
+      {/* here */}
     </Box>
   );
 
@@ -136,6 +160,21 @@ function DrawerAppBar(props) {
                 </NavLink>
               </Button>
             ))}
+
+            <NavLink
+              to="/notification"
+              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
+            >
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </NavLink>
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,10 +1,9 @@
 import React from "react";
-import ResponsiveAppBar from "../../CommonComponents/ResponsiveAppBar";
-
+import DrawerAppBar from "../../CommonComponents/DrawerAppBar/DrawerAppBar";
 const HomePage = () => {
   return (
     <div>
-      <ResponsiveAppBar />
+      <DrawerAppBar />
     </div>
   );
 };
