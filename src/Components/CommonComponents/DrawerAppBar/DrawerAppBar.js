@@ -18,7 +18,6 @@ import { NavLink } from "react-router-dom";
 import logo from "../../../assets/images/logo.png";
 
 const drawerWidth = 240;
-// const navItems = ["Home", "Create Post", "Contact"];
 const navItems = [
   [1, "Home", "/"],
   [2, "Create Event", "/create-event"],
@@ -82,7 +81,7 @@ function DrawerAppBar(props) {
     >
       <Typography variant="h6" sx={{ my: 2 }}>
         {/* logo image setting here */}
-        <img src={logo} alt="logo" style={{ width: "100px" }} />
+        <img src={logo} alt="logo" style={{ width: "150px" }} />
       </Typography>
       <Divider />
       <List>
@@ -128,7 +127,10 @@ function DrawerAppBar(props) {
 
   return (
     <Box sx={{ display: "flex", backgroundColor: "black", color: "whiite" }}>
-      <AppBar component="nav" sx={{ backgroundColor: "black", color: "white" }}>
+      <AppBar
+        component="nav"
+        sx={{ backgroundColor: "black", color: "white", padding: "10px" }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ".././node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import BackToTop from "./Components/CommonComponents/BackToTop/BackToTop";
 import DrawerAppBar from "./Components/CommonComponents/DrawerAppBar/DrawerAppBar";
 import Footer from "./Components/CommonComponents/Footer/Footer";
 import HomePage from "./Components/PageComponents/HomePage/HomePage";
@@ -17,6 +18,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
         </Routes>
         <Footer />
+        <BackToTop />
       </BrowserRouter>
     </>
   );
