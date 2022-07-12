@@ -30,8 +30,8 @@ const navItems = [
 
 //active style for navLink with animated border bottom
 const activeStyle = {
-  backgroundColor: "black",
-  color: "white",
+  backgroundColor: "white",
+  color: "black",
   borderRadius: "5px",
   padding: "10px",
   margin: "5px",
@@ -49,7 +49,7 @@ const activeStyle = {
 };
 
 const inactiveStyle = {
-  color: "black",
+  color: "white",
   backgroundColor: "transparent",
   borderRadius: "5px",
   padding: "5px",
@@ -76,7 +76,10 @@ function DrawerAppBar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{ textAlign: "center", backgroundColor: "black", height: "100%" }}
+    >
       <Typography variant="h6" sx={{ my: 2 }}>
         {/* logo image setting here */}
         <img src={logo} alt="logo" style={{ width: "100px" }} />
@@ -124,11 +127,8 @@ function DrawerAppBar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar
-        component="nav"
-        sx={{ backgroundColor: "#E7EBF0", color: "black" }}
-      >
+    <Box sx={{ display: "flex", backgroundColor: "black", color: "whiite" }}>
+      <AppBar component="nav" sx={{ backgroundColor: "black", color: "white" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -139,6 +139,7 @@ function DrawerAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography
             variant="h6"
             component="div"
@@ -146,7 +147,27 @@ function DrawerAppBar(props) {
           >
             <img src={logo} alt="logo" style={{ width: "200px" }} />
           </Typography>
-
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: 1,
+              display: { xs: "block", sm: "none" },
+              marginLeft: "auto",
+            }}
+          >
+            <img
+              src={logo}
+              alt="logo"
+              style={{
+                width: "200px",
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            />
+          </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Button key={item[0]}>

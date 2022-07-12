@@ -11,7 +11,6 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import DrawerAppBar from "../../CommonComponents/DrawerAppBar/DrawerAppBar";
 
 const theme = createTheme({
   palette: {
@@ -42,8 +41,11 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
-      <DrawerAppBar />
-      <Container component="main" maxWidth="xs" sx={{ marginTop: "100px" }}>
+      <Container
+        component="main"
+        maxWidth="xs"
+        sx={{ marginTop: "100px", paddingBottom: "80px" }}
+      >
         <CssBaseline />
         <Box
           sx={{
