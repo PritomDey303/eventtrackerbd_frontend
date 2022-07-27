@@ -14,7 +14,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext, LoaderContext, ToastContext } from "../../../App";
 import logo from "../../../assets/images/logo.png";
 
 const drawerWidth = 240;
@@ -22,8 +23,6 @@ const navItems = [
   [1, "Home", "/"],
   [2, "Create Event", "/create-event"],
   [3, "Your Events", "/your-events"],
-  [4, "Sign Up", "/signup"],
-  [5, "Login", "/signin"],
 ];
 //activeStyle for navLink with animation
 
@@ -67,8 +66,26 @@ const inactiveStyle = {
 };
 
 function DrawerAppBar(props) {
+  const [, user, setUser] = React.useContext(AuthContext);
+  const [, setLoader] = React.useContext(LoaderContext);
+  const [handleToast] = React.useContext(ToastContext);
+  const navigate = useNavigate();
   const { window } = props;
+  //signout function
+  const handleSignout = async () => {
+    setLoader(true);
+    try {
+      sessionStorage.removeItem("event_token");
+      setUser(null);
+      handleToast("success", "You have successfully signed out");
+      navigate("/", { replace: true });
+    } catch (err) {
+      handleToast("error", "Something went wrong");
+    }
+    setLoader(false);
+  };
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  //handle signout
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -184,6 +201,36 @@ function DrawerAppBar(props) {
               </Button>
             ))}
 
+            {user ? (
+              <Button onClick={handleSignout}>
+                <Typography style={{ color: "white" }} variant="subtitle1">
+                  Sign Out
+                </Typography>
+              </Button>
+            ) : (
+              <>
+                <Button>
+                  <NavLink
+                    to="/signup"
+                    style={({ isActive }) =>
+                      isActive ? activeStyle : inactiveStyle
+                    }
+                  >
+                    <Typography variant="subtitle1">Sign Up</Typography>
+                  </NavLink>
+                </Button>
+                <Button>
+                  <NavLink
+                    to="/signin"
+                    style={({ isActive }) =>
+                      isActive ? activeStyle : inactiveStyle
+                    }
+                  >
+                    <Typography variant="subtitle1">Sign In</Typography>
+                  </NavLink>
+                </Button>
+              </>
+            )}
             <NavLink
               to="/notification"
               style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}

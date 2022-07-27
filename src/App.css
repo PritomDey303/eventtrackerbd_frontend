@@ -4,3 +4,12 @@ html {
 .anton {
   font-family: "Anton", sans-serif;
 }
+._loading_overlay_overlay {
+  z-index: 99999;
+}
+._loading_overlay_content {
+  position: absolute;
+  top: 40vh;
+  left: 50%;
+  transform: translateX(-50%);
+}

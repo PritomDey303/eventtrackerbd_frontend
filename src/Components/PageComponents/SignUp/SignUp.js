@@ -9,8 +9,10 @@ import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext, LoaderContext, ToastContext } from "../../../App";
 
 const theme = createTheme({
   palette: {
@@ -24,16 +26,42 @@ const theme = createTheme({
 });
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  //getting AuthContext from App.js
+  const [url] = React.useContext(AuthContext);
+  //loader context
+  const [, setLoader] = React.useContext(LoaderContext);
+  //toast context
+  const [handleToast] = React.useContext(ToastContext);
+
+  const handleSubmit = async (event) => {
+    setLoader(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userObj = {
+      username: data.get("firstName") + " " + data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    //axios async call to sign up
+    try {
+      const res = await axios.post(`${url}/auth/signup`, userObj);
+      if (res.data.status !== 200) {
+        console.log(res.data);
+        handleToast("error", "Sorry! Invalid Name or Email or Password..");
+        setLoader(false);
+      } else {
+        console.log(res.data);
+        handleToast("success", res.data.message);
+        setLoader(false);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoader(false);
+      handleToast("error", "Sorry! Something went wrong.");
+    }
   };
-  //intialize the navigate function
-  const navigate = useNavigate();
+
   //link click handler to navigate to sign in page
   function linkClickHandler() {
     navigate("/signin", { replace: true });
@@ -44,7 +72,7 @@ export default function SignUp() {
       <Container
         component="main"
         maxWidth="xs"
-        sx={{ marginTop: "100px", paddingBottom: "80px" }}
+        sx={{ marginTop: "150px", paddingBottom: "80px" }}
       >
         <CssBaseline />
         <Box

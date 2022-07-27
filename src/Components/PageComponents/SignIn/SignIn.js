@@ -9,9 +9,10 @@ import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext, LoaderContext, ToastContext } from "../../../App";
 const theme = createTheme({
   palette: {
     primary: {
@@ -23,20 +24,66 @@ const theme = createTheme({
   },
 });
 
-export default function SignIn() {
+function SignIn() {
+  const [handleToast] = React.useContext(ToastContext);
+  //getting AuthContext from App.js
+  const auth = React.useContext(AuthContext);
+  const [url, user, setUser] = auth;
+  const [, setLoader] = React.useContext(LoaderContext);
   //intialize the navigate function
   const navigate = useNavigate();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    console.log(location);
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate, location]);
+
   //link click handler to navigate to sign in page
   function linkClickHandler() {
     navigate("/signup", { replace: true });
   }
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
+    setLoader(true);
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email");
+    const password = data.get("password");
+
+    //axios call to sign in
+    try {
+      const res = await axios.post(
+        `${url}/auth/signin`,
+        {
+          email: email,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(res);
+      if (res.data.status !== 200) {
+        handleToast("error", "Invalid email or password.");
+      } else {
+        setUser(res.data.data);
+        handleToast("success", res.data.message);
+        sessionStorage.setItem("event_token", JSON.stringify(res.data.token));
+
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 2000);
+      }
+      setLoader(false);
+    } catch (error) {
+      console.log(error.message);
+      setLoader(false);
+      handleToast("error", "Sorry! Something went wrong.");
+    }
   };
 
   return (
@@ -44,7 +91,7 @@ export default function SignIn() {
       <Container
         component="main"
         maxWidth="xs"
-        sx={{ marginTop: "100px", paddingBottom: "80px" }}
+        sx={{ marginTop: "150px", paddingBottom: "80px" }}
       >
         <CssBaseline />
         <Box
@@ -122,3 +169,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;
