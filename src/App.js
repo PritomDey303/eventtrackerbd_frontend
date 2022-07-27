@@ -3,10 +3,8 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import axios from "axios";
 import React from "react";
 import { CookiesProvider } from "react-cookie";
-import LoadingOverlay from "react-loading-overlay";
 import { Ripple } from "react-preloaders2";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { FadeLoader } from "react-spinners";
 import ".././node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import BackToTop from "./Components/CommonComponents/BackToTop/BackToTop";
@@ -81,55 +79,55 @@ function App() {
         <ToastContext.Provider value={[handleToast]}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <LoaderContext.Provider value={[loader, setLoader]}>
-              <LoadingOverlay active={loader} spinner={<FadeLoader />}>
-                <CookiesProvider>
-                  <BrowserRouter>
-                    <DrawerAppBar />
-                    <Routes>
-                      <Route exact path="/" element={<HomePage />} />
+              {/* <LoadingOverlay active={loader} spinner={<FadeLoader />}> */}
+              <CookiesProvider>
+                <BrowserRouter>
+                  <DrawerAppBar />
+                  <Routes>
+                    <Route exact path="/" element={<HomePage />} />
 
-                      <Route path="/signup" element={<SignUp />} />
+                    <Route path="/signup" element={<SignUp />} />
 
-                      <Route path="/*" element={<ProtectedRoute />}>
-                        <Route path="create-event" element={<CreateEvent />} />
-                        <Route path="notification" element={<Notification />} />
-                      </Route>
+                    <Route path="/*" element={<ProtectedRoute />}>
+                      <Route path="create-event" element={<CreateEvent />} />
+                      <Route path="notification" element={<Notification />} />
+                    </Route>
 
-                      <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signin" element={<SignIn />} />
 
-                      <Route
-                        path="/auth/verify/:token"
-                        element={<EmailVerification />}
-                      />
-                      <Route
-                        path="*"
-                        element={
-                          <div
-                            style={{
-                              marginTop: "150px",
-                              color: "red",
-                              padding: "50px 0",
-                              textAlign: "center",
-                            }}
-                          >
-                            <h3 color="red">
-                              Sorry! Your requested page not found.
-                            </h3>
-                          </div>
-                        }
-                      />
-                    </Routes>
-                    <Footer />
-                    <BackToTop />
-                    <SnackBar
-                      open={open}
-                      setOpen={setOpen}
-                      severity={severity}
-                      message={message}
+                    <Route
+                      path="/auth/verify/:token"
+                      element={<EmailVerification />}
                     />
-                  </BrowserRouter>
-                </CookiesProvider>
-              </LoadingOverlay>
+                    <Route
+                      path="*"
+                      element={
+                        <div
+                          style={{
+                            marginTop: "150px",
+                            color: "red",
+                            padding: "50px 0",
+                            textAlign: "center",
+                          }}
+                        >
+                          <h3 color="red">
+                            Sorry! Your requested page not found.
+                          </h3>
+                        </div>
+                      }
+                    />
+                  </Routes>
+                  <Footer />
+                  <BackToTop />
+                  <SnackBar
+                    open={open}
+                    setOpen={setOpen}
+                    severity={severity}
+                    message={message}
+                  />
+                </BrowserRouter>
+              </CookiesProvider>
+              {/* </LoadingOverlay> */}
               <Ripple background="rgb(231, 234, 229)" color="black" />
             </LoaderContext.Provider>
           </LocalizationProvider>
