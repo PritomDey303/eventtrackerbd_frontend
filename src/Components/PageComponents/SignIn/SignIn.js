@@ -28,7 +28,7 @@ function SignIn() {
   const [handleToast] = React.useContext(ToastContext);
   //getting AuthContext from App.js
   const auth = React.useContext(AuthContext);
-  const [url, user, setUser] = auth;
+  const [url, user, setUser, , triggerToken, setTriggerToken] = auth;
   const [, setLoader] = React.useContext(LoaderContext);
   //intialize the navigate function
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ function SignIn() {
         setUser(res.data.data);
         handleToast("success", res.data.message);
         sessionStorage.setItem("event_token", JSON.stringify(res.data.token));
-
+        setTriggerToken(!triggerToken);
         setTimeout(() => {
           navigate("/", { replace: true });
         }, 2000);

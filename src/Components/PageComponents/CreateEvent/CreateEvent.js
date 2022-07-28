@@ -84,7 +84,6 @@ export default function CreateEvent() {
           },
           withCredentials: true,
         });
-        console.log(response);
         if (response.data.status !== 200) {
           handleToast("error", "Error creating event.");
           setLoader(false);

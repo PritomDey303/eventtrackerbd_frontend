@@ -30,6 +30,7 @@ function App() {
   const [severity, setSeverity] = React.useState("error");
   const [message, setMessage] = React.useState(null);
   const [token, setToken] = React.useState(null);
+  const [triggerToken, setTriggerToken] = React.useState(false);
   const [notifyCount, setNotifyCount] = React.useState(0);
   const [notifyTrigger, setNotifyTrigger] = React.useState(false);
   const url = "https://eventtrackerbd.herokuapp.com";
@@ -39,7 +40,7 @@ function App() {
     if (token) {
       setToken(token);
     }
-  }, []);
+  }, [triggerToken]);
   //get user
   React.useEffect(() => {
     const getUser = async () => {
@@ -99,7 +100,9 @@ function App() {
 
   return (
     <>
-      <AuthContext.Provider value={[url, user, setUser, token]}>
+      <AuthContext.Provider
+        value={[url, user, setUser, token, triggerToken, setTriggerToken]}
+      >
         <ToastContext.Provider value={[handleToast]}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <LoaderContext.Provider value={[loader, setLoader]}>
