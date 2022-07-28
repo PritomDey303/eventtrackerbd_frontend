@@ -46,11 +46,10 @@ export default function CreateEvent() {
   const [, setLoader] = React.useContext(LoaderContext);
   const [handleToast] = React.useContext(ToastContext);
   const [tempPlace, setTempPlace] = React.useState([]);
-  const [resetForm, setResetForm] = React.useState(false);
   const [, , notifyTrigger, setNotifyTrigger] =
     React.useContext(NotificationContext);
   //react form hook
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, resetField } = useForm();
   const onSubmit = async (data) => {
     setLoader(true);
     const locationInfo = tempPlace.find(
@@ -89,10 +88,22 @@ export default function CreateEvent() {
           setLoader(false);
           return;
         }
-        setResetForm(!resetForm);
         handleToast("success", "Event Created Successfully.");
         setNotifyTrigger(!notifyTrigger);
         setLoader(false);
+        resetField("event_name");
+        resetField("event_date");
+        resetField("event_time");
+        resetField("event_location");
+        resetField("event_description");
+        resetField("event_banner_image");
+        resetField("event_category");
+        resetField("event_type");
+        resetField("event_organizer");
+        resetField("event_organizer_email");
+        resetField("event_organizer_mobile");
+        resetField("event_organizer_website");
+        resetField("event_organizer_facebook");
       } else {
         console.log("no token");
         setLoader(false);
@@ -130,7 +141,6 @@ export default function CreateEvent() {
     const { data, error } = await axios.get(
       `https://barikoi.xyz/v1/api/search/autocomplete/MzU4MzpBVkRFMklQNjdS/place?q=${value}`
     );
-    console.log(Object.keys(data));
     if (Object.keys(data).includes("places")) {
       data.places.map((place) => {
         let temp = {
@@ -156,15 +166,6 @@ export default function CreateEvent() {
       console.log(error);
     }
   };
-  ////////reset form value
-  const resetAsyncForm = React.useCallback(async () => {
-    const result = await fetch("./api/formValues.json"); // result: { firstName: 'test', lastName: 'test2' }
-    reset(result); // asynchronously reset your form values
-  }, [reset]);
-
-  React.useEffect(() => {
-    resetAsyncForm();
-  }, [resetForm, resetAsyncForm]);
 
   //////////////////////////////////////
   ///////////////////////////////////
