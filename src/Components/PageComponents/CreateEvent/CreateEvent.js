@@ -21,7 +21,12 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import axios from "axios";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { AuthContext, LoaderContext, ToastContext } from "../../../App";
+import {
+  AuthContext,
+  LoaderContext,
+  NotificationContext,
+  ToastContext,
+} from "../../../App";
 import EventCategoryList from "../../../UtilityFunctions/EventCategoryList/EventCategoryList";
 
 const theme = createTheme({
@@ -42,9 +47,12 @@ export default function CreateEvent() {
   const [handleToast] = React.useContext(ToastContext);
   const [tempPlace, setTempPlace] = React.useState([]);
   const [resetForm, setResetForm] = React.useState(false);
+  const [, , notifyTrigger, setNotifyTrigger] =
+    React.useContext(NotificationContext);
   //react form hook
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = async (data) => {
+    setLoader(true);
     const locationInfo = tempPlace.find(
       (place) => place.address === data.event_location
     );
@@ -68,22 +76,28 @@ export default function CreateEvent() {
 
     //axios multipart form data post with credentials
     try {
-      const response = await axios.post(`${url}/event/create`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: `bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-      console.log(response);
-      if (response.data.status !== 200) {
-        handleToast("error", "Error creating event.");
+      if (token) {
+        const response = await axios.post(`${url}/event/create`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: `bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        console.log(response);
+        if (response.data.status !== 200) {
+          handleToast("error", "Error creating event.");
+          setLoader(false);
+          return;
+        }
+        setResetForm(!resetForm);
+        handleToast("success", "Event Created Successfully.");
+        setNotifyTrigger(!notifyTrigger);
         setLoader(false);
-        return;
+      } else {
+        console.log("no token");
+        setLoader(false);
       }
-      setResetForm(!resetForm);
-      handleToast("success", "Event Created Successfully.");
-      setLoader(false);
     } catch (error) {
       handleToast("error", "Error creating event.");
       setLoader(false);

@@ -15,7 +15,12 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext, LoaderContext, ToastContext } from "../../../App";
+import {
+  AuthContext,
+  LoaderContext,
+  NotificationContext,
+  ToastContext,
+} from "../../../App";
 import logo from "../../../assets/images/logo.png";
 
 const drawerWidth = 240;
@@ -71,6 +76,7 @@ function DrawerAppBar(props) {
   const [handleToast] = React.useContext(ToastContext);
   const navigate = useNavigate();
   const { window } = props;
+  const [notifyCount] = React.useContext(NotificationContext);
   //signout function
   const handleSignout = async () => {
     setLoader(true);
@@ -116,6 +122,45 @@ function DrawerAppBar(props) {
             </ListItemButton>
           </ListItem>
         ))}
+        {user && (
+          <ListItem disablePadding>
+            <Button onClick={handleSignout} style={{ marginLeft: "10px" }}>
+              <Typography style={{ color: "white" }} variant="subtitle1">
+                Sign Out
+              </Typography>
+            </Button>
+          </ListItem>
+        )}
+        {!user && (
+          <>
+            <ListItem disablePadding>
+              {" "}
+              <Button style={{ marginLeft: "10px" }}>
+                <NavLink
+                  to="/signup"
+                  style={({ isActive }) =>
+                    isActive ? activeStyle : inactiveStyle
+                  }
+                >
+                  <Typography variant="subtitle1">Sign Up</Typography>
+                </NavLink>
+              </Button>
+            </ListItem>
+            <ListItem disablePadding>
+              <Button style={{ marginLeft: "10px" }}>
+                <NavLink
+                  to="/signin"
+                  style={({ isActive }) =>
+                    isActive ? activeStyle : inactiveStyle
+                  }
+                >
+                  <Typography variant="subtitle1">Sign In</Typography>
+                </NavLink>
+              </Button>
+            </ListItem>
+          </>
+        )}
+
         <ListItem disablePadding>
           <ListItemButton key="notification" sx={{ textAlign: "center" }}>
             <NavLink
@@ -127,7 +172,7 @@ function DrawerAppBar(props) {
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={notifyCount} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
@@ -240,7 +285,7 @@ function DrawerAppBar(props) {
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={notifyCount} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>

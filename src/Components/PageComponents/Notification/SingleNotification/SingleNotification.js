@@ -1,11 +1,38 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Box, Grid, Paper } from "@mui/material";
+import axios from "axios";
 import React from "react";
 import Moment from "react-moment";
+import { AuthContext, LoaderContext, ToastContext } from "../../../../App";
 export default function SingleNotification(props) {
-  const { body, createdAt, read } = props.notification;
-  console.log(props.notification);
+  const { body, createdAt, read, _id } = props.notification;
+  const [url, , , token] = React.useContext(AuthContext);
+  const [, setLoader] = React.useContext(LoaderContext);
+  const [handleToast] = React.useContext(ToastContext);
+  //delete notifications
+  const deleteNotification = async () => {
+    setLoader(true);
+
+    if (token) {
+      const res = await axios({
+        url: `${url}/notification/delete/${_id}`,
+        headers: {
+          authorization: `bearer ${token}`,
+        },
+        method: "delete",
+      });
+      console.log(res);
+      if (res.data.status === 200) {
+        props.setTrigger(!props.trigger);
+        handleToast("success", res.data.message);
+      } else {
+        handleToast("error", res.data.message);
+      }
+    }
+    setLoader(false);
+  };
+  //console.log(props.notification);
   return (
     <Grid item xs={12}>
       <Box
@@ -37,7 +64,7 @@ export default function SingleNotification(props) {
               </span>
             </div>
 
-            <div className="notification_delete">
+            <div className="notification_delete" onClick={deleteNotification}>
               <CancelIcon style={{ color: "red" }} />
             </div>
           </div>

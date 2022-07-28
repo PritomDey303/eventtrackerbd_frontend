@@ -17,7 +17,9 @@ import HomePage from "./Components/PageComponents/HomePage/HomePage";
 import Notification from "./Components/PageComponents/Notification/Notification";
 import SignIn from "./Components/PageComponents/SignIn/SignIn";
 import SignUp from "./Components/PageComponents/SignUp/SignUp";
+import SimpleBackdrop from "./UtilityFunctions/SimpleBackDrop/SimpleBackDrop";
 import SnackBar from "./UtilityFunctions/SnackBar/SnackBar";
+export const NotificationContext = React.createContext();
 export const AuthContext = React.createContext();
 export const ToastContext = React.createContext();
 export const LoaderContext = React.createContext();
@@ -28,7 +30,8 @@ function App() {
   const [severity, setSeverity] = React.useState("error");
   const [message, setMessage] = React.useState(null);
   const [token, setToken] = React.useState(null);
-
+  const [notifyCount, setNotifyCount] = React.useState(0);
+  const [notifyTrigger, setNotifyTrigger] = React.useState(false);
   const url = "https://eventtrackerbd.herokuapp.com";
   //const url = "http://localhost:5000";
   React.useEffect(() => {
@@ -60,6 +63,7 @@ function App() {
         setLoader(false);
       }
     };
+    setLoader(false);
     getUser();
   }, [token]);
 
@@ -72,6 +76,26 @@ function App() {
     setMessage(msg);
   };
   // //getting logged in user
+  //get notification count
+  React.useEffect(() => {
+    const getNotifyCount = async () => {
+      if (token) {
+        const res = await axios.get(`${url}/notification/count/unreadcount`, {
+          headers: {
+            authorization: `bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        console.log(res.data);
+        if (res.data.status === 200) {
+          setNotifyCount(res.data.data);
+        } else {
+          setNotifyCount(0);
+        }
+      }
+    };
+    getNotifyCount();
+  }, [token, notifyTrigger]);
 
   return (
     <>
@@ -79,55 +103,63 @@ function App() {
         <ToastContext.Provider value={[handleToast]}>
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <LoaderContext.Provider value={[loader, setLoader]}>
-              {/* <LoadingOverlay active={loader} spinner={<FadeLoader />}> */}
-              <CookiesProvider>
-                <BrowserRouter>
-                  <DrawerAppBar />
-                  <Routes>
-                    <Route exact path="/" element={<HomePage />} />
+              <NotificationContext.Provider
+                value={[
+                  notifyCount,
+                  setNotifyCount,
+                  notifyTrigger,
+                  setNotifyTrigger,
+                ]}
+              >
+                <CookiesProvider>
+                  <BrowserRouter>
+                    <DrawerAppBar />
+                    <Routes>
+                      <Route exact path="/" element={<HomePage />} />
 
-                    <Route path="/signup" element={<SignUp />} />
+                      <Route path="/signup" element={<SignUp />} />
 
-                    <Route path="/*" element={<ProtectedRoute />}>
-                      <Route path="create-event" element={<CreateEvent />} />
-                      <Route path="notification" element={<Notification />} />
-                    </Route>
+                      <Route path="/*" element={<ProtectedRoute />}>
+                        <Route path="create-event" element={<CreateEvent />} />
+                        <Route path="notification" element={<Notification />} />
+                      </Route>
 
-                    <Route path="/signin" element={<SignIn />} />
+                      <Route path="/signin" element={<SignIn />} />
 
-                    <Route
-                      path="/auth/verify/:token"
-                      element={<EmailVerification />}
+                      <Route
+                        path="/auth/verify/:token"
+                        element={<EmailVerification />}
+                      />
+                      <Route
+                        path="*"
+                        element={
+                          <div
+                            style={{
+                              marginTop: "150px",
+                              color: "red",
+                              padding: "50px 0",
+                              textAlign: "center",
+                            }}
+                          >
+                            <h3 color="red">
+                              Sorry! Your requested page not found.
+                            </h3>
+                          </div>
+                        }
+                      />
+                    </Routes>
+                    <Footer />
+                    <BackToTop />
+                    <SnackBar
+                      open={open}
+                      setOpen={setOpen}
+                      severity={severity}
+                      message={message}
                     />
-                    <Route
-                      path="*"
-                      element={
-                        <div
-                          style={{
-                            marginTop: "150px",
-                            color: "red",
-                            padding: "50px 0",
-                            textAlign: "center",
-                          }}
-                        >
-                          <h3 color="red">
-                            Sorry! Your requested page not found.
-                          </h3>
-                        </div>
-                      }
-                    />
-                  </Routes>
-                  <Footer />
-                  <BackToTop />
-                  <SnackBar
-                    open={open}
-                    setOpen={setOpen}
-                    severity={severity}
-                    message={message}
-                  />
-                </BrowserRouter>
-              </CookiesProvider>
-              {/* </LoadingOverlay> */}
+                  </BrowserRouter>
+                </CookiesProvider>
+              </NotificationContext.Provider>
+              <SimpleBackdrop loader={loader} />
               <Ripple background="rgb(231, 234, 229)" color="black" />
             </LoaderContext.Provider>
           </LocalizationProvider>
