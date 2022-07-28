@@ -55,11 +55,11 @@ function EmailVerification() {
             color="success"
             onClick={handleClick}
             style={{
-              marginTop: "20px",
               display: "block",
               margin: "0 auto",
               width: "80px",
               height: "50px",
+              marginTop: "50px",
             }}
           >
             {" "}

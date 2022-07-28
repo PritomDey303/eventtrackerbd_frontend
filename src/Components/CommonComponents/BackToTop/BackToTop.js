@@ -2,7 +2,7 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import React, { useState } from "react";
 import "./BackToTop.css";
 export default function BackToTop() {
-  const [ButtonState, setButtonState] = useState("null");
+  const [ButtonState, setButtonState] = useState("none");
   window.onscroll = function () {
     scrollFunction();
   };

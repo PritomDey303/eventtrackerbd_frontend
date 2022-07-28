@@ -91,3 +91,10 @@
 .copyright-text span {
   color: #96c87a;
 }
+
+/* media  query */
+@media screen and (max-width: 400px) {
+  .icons-container {
+    margin: 0 5px;
+  }
+}

@@ -121,15 +121,21 @@ export default function Notification() {
               />
             ))
           ) : (
-            <div className="no_notification">
-              <Typography
-                component="h1"
-                style={{ color: "red", textAlign: "center", marginTop: "50px" }}
-                variant="h5"
-              >
-                No Notifications
-              </Typography>
-            </div>
+            <Grid item xs={12}>
+              <div className="no_notification">
+                <Typography
+                  component="h1"
+                  style={{
+                    color: "red",
+                    textAlign: "center",
+                    marginTop: "50px",
+                  }}
+                  variant="h5"
+                >
+                  No Notifications
+                </Typography>
+              </div>
+            </Grid>
           )}
         </Grid>
         <div
