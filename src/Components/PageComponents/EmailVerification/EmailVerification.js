@@ -46,7 +46,9 @@ function EmailVerification() {
   return (
     <div style={{ marginTop: "150px", paddingBottom: "140px" }}>
       <Container maxWidth="sm">
-        <h2 style={{ color: "green" }}>Verify your email.......</h2>
+        <h2 style={{ color: "green", textAlign: "center" }}>
+          Verify your email.......
+        </h2>
         {show && (
           <Button
             variant="outlined"
@@ -56,7 +58,7 @@ function EmailVerification() {
               marginTop: "20px",
               display: "block",
               margin: "0 auto",
-              width: "10%",
+              width: "80px",
               height: "50px",
             }}
           >

@@ -122,7 +122,11 @@ export default function Notification() {
             ))
           ) : (
             <div className="no_notification">
-              <Typography component="h1" variant="h5">
+              <Typography
+                component="h1"
+                style={{ color: "red", textAlign: "center", marginTop: "50px" }}
+                variant="h5"
+              >
                 No Notifications
               </Typography>
             </div>

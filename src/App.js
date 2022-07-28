@@ -3,7 +3,6 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import axios from "axios";
 import React from "react";
 import { CookiesProvider } from "react-cookie";
-import { Ripple } from "react-preloaders2";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ".././node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -163,7 +162,7 @@ function App() {
                 </CookiesProvider>
               </NotificationContext.Provider>
               <SimpleBackdrop loader={loader} />
-              <Ripple background="rgb(231, 234, 229)" color="black" />
+              {/* <Ripple background="rgb(231, 234, 229)" color="black" /> */}
             </LoaderContext.Provider>
           </LocalizationProvider>
         </ToastContext.Provider>
