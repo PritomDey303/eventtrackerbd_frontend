@@ -111,5 +111,9 @@ const EventCategoryList = [
     id: 28,
     name: "Writing and Literature",
   },
+  {
+    id: 29,
+    name: "Debate",
+  },
 ];
 module.exports = EventCategoryList;

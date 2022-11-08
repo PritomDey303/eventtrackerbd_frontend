@@ -12,10 +12,12 @@ import Footer from "./Components/CommonComponents/Footer/Footer";
 import ProtectedRoute from "./Components/CommonComponents/ProtectedRoute/ProtectedRoute";
 import CreateEvent from "./Components/PageComponents/CreateEvent/CreateEvent";
 import EmailVerification from "./Components/PageComponents/EmailVerification/EmailVerification";
+import EventDetails from "./Components/PageComponents/HomePage/Events/EventDetails/EventDetails";
 import HomePage from "./Components/PageComponents/HomePage/HomePage";
 import Notification from "./Components/PageComponents/Notification/Notification";
 import SignIn from "./Components/PageComponents/SignIn/SignIn";
 import SignUp from "./Components/PageComponents/SignUp/SignUp";
+import YourEvent from "./Components/PageComponents/YourEvent/YourEvent";
 import SimpleBackdrop from "./UtilityFunctions/SimpleBackDrop/SimpleBackDrop";
 import SnackBar from "./UtilityFunctions/SnackBar/SnackBar";
 export const NotificationContext = React.createContext();
@@ -32,7 +34,7 @@ function App() {
   const [triggerToken, setTriggerToken] = React.useState(false);
   const [notifyCount, setNotifyCount] = React.useState(0);
   const [notifyTrigger, setNotifyTrigger] = React.useState(false);
-  const url = "https://eventtrackerbd.herokuapp.com";
+  const url = "http://localhost:5000";
   //const url = "http://localhost:5000";
   React.useEffect(() => {
     const token = JSON.parse(sessionStorage.getItem("event_token"));
@@ -120,10 +122,13 @@ function App() {
                       <Route exact path="/" element={<HomePage />} />
 
                       <Route path="/signup" element={<SignUp />} />
+                      <Route path="/event/:id" element={<EventDetails />} />
+                      <Route path="/signup" element={<SignUp />} />
 
                       <Route path="/*" element={<ProtectedRoute />}>
                         <Route path="create-event" element={<CreateEvent />} />
                         <Route path="notification" element={<Notification />} />
+                        <Route path="your-events" element={<YourEvent />} />
                       </Route>
 
                       <Route path="/signin" element={<SignIn />} />

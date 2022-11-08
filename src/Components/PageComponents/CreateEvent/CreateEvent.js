@@ -56,8 +56,10 @@ export default function CreateEvent() {
       (place) => place.address === data.event_location
     );
     const locationArr = [locationInfo];
-    //setLoader(true);
+
+    //setLoader(true);g
     const formData = new FormData();
+    //console.log(data.event_type);
     formData.append("event_name", data.event_name);
     formData.append("event_date", data.event_date);
     formData.append("event_time", data.event_time);
@@ -83,8 +85,9 @@ export default function CreateEvent() {
           },
           withCredentials: true,
         });
+        // console.log(response.data);
         if (response.data.status !== 200) {
-          handleToast("error", "Error creating event.");
+          handleToast("error", "There was an error creating the event");
           setLoader(false);
           return;
         }
@@ -105,10 +108,10 @@ export default function CreateEvent() {
         resetField("event_organizer_website");
         resetField("event_organizer_facebook");
       } else {
-        console.log("no token");
         setLoader(false);
       }
     } catch (error) {
+      //console.log(error.message);
       handleToast("error", "Error creating event.");
       setLoader(false);
     }
@@ -124,7 +127,7 @@ export default function CreateEvent() {
   //onKeyUp delay
   const onKeyUpDelay = (e) => {
     setTempPlace([]);
-    console.log(e.target.value);
+    //console.log(e.target.value);
     clearTimeout(x_timer);
     x_timer = setTimeout(() => {
       locationHandler(e);
@@ -139,7 +142,7 @@ export default function CreateEvent() {
       value = "dhaka";
     }
     const { data, error } = await axios.get(
-      `https://barikoi.xyz/v1/api/search/autocomplete/MzU4MzpBVkRFMklQNjdS/place?q=${value}`
+      `https://barikoi.xyz/v1/api/search/autocomplete/MzU4MzpUVkZEMEk4SVFE/place?q=${value}`
     );
     if (Object.keys(data).includes("places")) {
       data.places.map((place) => {
@@ -304,16 +307,15 @@ export default function CreateEvent() {
                     id="demo-simple-select-helper"
                     label="Event Type"
                     color="secondary"
-                    name="event_type"
+                    {...register("event_type", { required: true })}
                     required
                     defaultValue={""}
                   >
-                    <MenuItem value="">
+                    <MenuItem disabled>
                       <em>None</em>
                     </MenuItem>
                     <MenuItem value="Offline">Offline</MenuItem>
                     <MenuItem value="Online">Online</MenuItem>
-                    <MenuItem value="Both">Both</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -338,7 +340,7 @@ export default function CreateEvent() {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
+
                     {EventCategoryList.map((category) => {
                       return (
                         <MenuItem key={category.id} value={category.name}>

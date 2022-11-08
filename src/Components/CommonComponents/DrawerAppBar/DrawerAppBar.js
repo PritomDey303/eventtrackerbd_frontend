@@ -134,7 +134,6 @@ function DrawerAppBar(props) {
         {!user && (
           <>
             <ListItem disablePadding>
-              {" "}
               <Button style={{ marginLeft: "10px" }}>
                 <NavLink
                   to="/signup"
